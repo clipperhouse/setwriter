@@ -3,6 +3,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"strings"
 
@@ -17,8 +18,14 @@ func main() {
 	}
 
 	a, err := typewriter.NewAppFiltered("+test", filter)
+
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
+		os.Exit(1)
 	}
-	a.WriteAll()
+
+	if _, err := a.WriteAll(); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 }
