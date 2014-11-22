@@ -19,17 +19,17 @@ func NewSetWriter() *SetWriter {
 	return &SetWriter{}
 }
 
-func (c *SetWriter) Name() string {
+func (sw *SetWriter) Name() string {
 	return "set"
 }
 
-func (c *SetWriter) Imports(t typewriter.Type) (result []typewriter.ImportSpec) {
+func (sw *SetWriter) Imports(t typewriter.Type) (result []typewriter.ImportSpec) {
 	// none
 	return result
 }
 
-func (c *SetWriter) Write(w io.Writer, t typewriter.Type) error {
-	tag, found := t.FindTag(c)
+func (sw *SetWriter) Write(w io.Writer, t typewriter.Type) error {
+	tag, found := t.FindTag(sw)
 
 	if !found {
 		// nothing to be done
