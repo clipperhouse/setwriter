@@ -2,7 +2,6 @@ package setwriter
 
 import (
 	"io"
-	"text/template"
 
 	"github.com/clipperhouse/typewriter"
 )
@@ -30,7 +29,7 @@ func (c *SetWriter) Imports(t typewriter.Type) (result []typewriter.ImportSpec) 
 }
 
 func (c *SetWriter) Write(w io.Writer, t typewriter.Type) error {
-	_, found := t.FindTag("set")
+	tag, found := t.FindTag(c.Name())
 
 	if !found {
 		// nothing to be done
@@ -50,7 +49,7 @@ func (c *SetWriter) Write(w io.Writer, t typewriter.Type) error {
 		return err
 	}
 
-	tmpl, err := template.New("set").Parse(set.Text)
+	tmpl, err := templates.ByTag(t, tag)
 
 	if err != nil {
 		return err

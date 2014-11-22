@@ -2,6 +2,10 @@ package setwriter
 
 import "github.com/clipperhouse/typewriter"
 
+var templates = typewriter.TemplateSlice{
+	set,
+}
+
 var set = &typewriter.Template{
 	Name: "Set",
 	Text: `
