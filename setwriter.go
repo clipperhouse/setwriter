@@ -29,7 +29,7 @@ func (c *SetWriter) Imports(t typewriter.Type) (result []typewriter.ImportSpec) 
 }
 
 func (c *SetWriter) Write(w io.Writer, t typewriter.Type) error {
-	tag, found := t.FindTag(c.Name())
+	tag, found := t.FindTag(c)
 
 	if !found {
 		// nothing to be done
