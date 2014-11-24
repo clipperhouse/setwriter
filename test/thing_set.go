@@ -12,17 +12,21 @@ package main
 type ThingSet map[Thing]struct{}
 
 // Creates and returns a reference to an empty set.
-func NewThingSet() ThingSet {
-	return make(ThingSet)
+func NewThingSet(a ...Thing) ThingSet {
+	s := make(ThingSet)
+	for _, i := range a {
+		s.Add(i)
+	}
+	return s
 }
 
-// Creates and returns a reference to a set from an existing slice
-func NewThingSetFromSlice(s []Thing) ThingSet {
-	a := NewThingSet()
-	for _, item := range s {
-		a.Add(item)
+// ToSlice returns the elements of the current set as a slice
+func (set ThingSet) ToSlice() []Thing {
+	var s []Thing
+	for v := range set {
+		s = append(s, v)
 	}
-	return a
+	return s
 }
 
 // Adds an item to the current set if it doesn't already exist in the set.
@@ -40,11 +44,12 @@ func (set ThingSet) Contains(i Thing) bool {
 
 // Determines if the given items are all in the set
 func (set ThingSet) ContainsAll(i ...Thing) bool {
-	allSet := NewThingSetFromSlice(i)
-	if allSet.IsSubset(set) {
-		return true
+	for _, v := range i {
+		if !set.Contains(v) {
+			return false
+		}
 	}
-	return false
+	return true
 }
 
 // Determines if every item in the other set is in this set.
