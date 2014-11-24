@@ -45,10 +45,6 @@ func (sw *SetWriter) Write(w io.Writer, t typewriter.Type) error {
 		return err
 	}
 
-	if err := set.TypeConstraint.TryType(t); err != nil {
-		return err
-	}
-
 	tmpl, err := templates.ByTag(t, tag)
 
 	if err != nil {
