@@ -13,8 +13,12 @@ var set = &typewriter.Template{
 type {{.Name}}Set map[{{.Pointer}}{{.Name}}]struct{}
 
 // Creates and returns a reference to an empty set.
-func New{{.Name}}Set() {{.Name}}Set {
-	return make({{.Name}}Set)
+func New{{.Name}}Set(a ...{{.Pointer}}{{.Name}}) {{.Name}}Set {
+	s := make({{.Name}}Set)
+	for _, i := range a {
+		s.Add(i)
+	}
+	return s
 }
 
 // ToSlice returns the elements of the current set as a slice
