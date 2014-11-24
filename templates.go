@@ -17,13 +17,13 @@ func New{{.Name}}Set() {{.Name}}Set {
 	return make({{.Name}}Set)
 }
 
-// Creates and returns a reference to a set from an existing slice
-func New{{.Name}}SetFromSlice(s []{{.Pointer}}{{.Name}}) {{.Name}}Set {
-	a := New{{.Name}}Set()
-	for _, item := range s {
-		a.Add(item)
+// ToSlice returns the elements of the current set as a slice
+func (set {{.Name}}Set) ToSlice() []{{.Pointer}}{{.Name}} {
+	var s []{{.Pointer}}{{.Name}}
+	for v := range set {
+		s = append(s, v)
 	}
-	return a
+	return s
 }
 
 // Adds an item to the current set if it doesn't already exist in the set.
@@ -41,11 +41,12 @@ func (set {{.Name}}Set) Contains(i {{.Pointer}}{{.Name}}) bool {
 
 // Determines if the given items are all in the set
 func (set {{.Name}}Set) ContainsAll(i ...{{.Pointer}}{{.Name}}) bool {
-	allSet := New{{.Name}}SetFromSlice(i)
-	if allSet.IsSubset(set) {
-		return true
+	for _, v := range i {
+		if !set.Contains(v) {
+			return false
+		}
 	}
-	return false
+	return true
 }
 
 // Determines if every item in the other set is in this set.
