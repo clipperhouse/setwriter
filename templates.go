@@ -1,4 +1,4 @@
-package setwriter
+package set
 
 import "github.com/clipperhouse/typewriter"
 
