@@ -9,10 +9,10 @@ var templates = typewriter.TemplateSlice{
 var set = &typewriter.Template{
 	Name: "Set",
 	Text: `
-// The primary type that represents a set
+// {{.Name}}Set is the primary type that represents a set
 type {{.Name}}Set map[{{.Pointer}}{{.Name}}]struct{}
 
-// Creates and returns a reference to an empty set.
+// New{{.Name}}Set creates and returns a reference to an empty set.
 func New{{.Name}}Set(a ...{{.Pointer}}{{.Name}}) {{.Name}}Set {
 	s := make({{.Name}}Set)
 	for _, i := range a {
@@ -30,20 +30,20 @@ func (set {{.Name}}Set) ToSlice() []{{.Pointer}}{{.Name}} {
 	return s
 }
 
-// Adds an item to the current set if it doesn't already exist in the set.
+// Add adds an item to the current set if it doesn't already exist in the set.
 func (set {{.Name}}Set) Add(i {{.Pointer}}{{.Name}}) bool {
 	_, found := set[i]
 	set[i] = struct{}{}
 	return !found //False if it existed already
 }
 
-// Determines if a given item is already in the set.
+// Contains determines if a given item is already in the set.
 func (set {{.Name}}Set) Contains(i {{.Pointer}}{{.Name}}) bool {
 	_, found := set[i]
 	return found
 }
 
-// Determines if the given items are all in the set
+// ContainsAll determines if the given items are all in the set
 func (set {{.Name}}Set) ContainsAll(i ...{{.Pointer}}{{.Name}}) bool {
 	for _, v := range i {
 		if !set.Contains(v) {
@@ -53,7 +53,7 @@ func (set {{.Name}}Set) ContainsAll(i ...{{.Pointer}}{{.Name}}) bool {
 	return true
 }
 
-// Determines if every item in the other set is in this set.
+// IsSubset determines if every item in the other set is in this set.
 func (set {{.Name}}Set) IsSubset(other {{.Name}}Set) bool {
 	for elem := range set {
 		if !other.Contains(elem) {
@@ -63,12 +63,12 @@ func (set {{.Name}}Set) IsSubset(other {{.Name}}Set) bool {
 	return true
 }
 
-// Determines if every item of this set is in the other set.
+// IsSuperset determines if every item of this set is in the other set.
 func (set {{.Name}}Set) IsSuperset(other {{.Name}}Set) bool {
 	return other.IsSubset(set)
 }
 
-// Returns a new set with all items in both sets.
+// Union returns a new set with all items in both sets.
 func (set {{.Name}}Set) Union(other {{.Name}}Set) {{.Name}}Set {
 	unionedSet := New{{.Name}}Set()
 
@@ -81,7 +81,7 @@ func (set {{.Name}}Set) Union(other {{.Name}}Set) {{.Name}}Set {
 	return unionedSet
 }
 
-// Returns a new set with items that exist only in both sets.
+// Intersect returns a new set with items that exist only in both sets.
 func (set {{.Name}}Set) Intersect(other {{.Name}}Set) {{.Name}}Set {
 	intersection := New{{.Name}}Set()
 	// loop over smaller set
@@ -101,7 +101,7 @@ func (set {{.Name}}Set) Intersect(other {{.Name}}Set) {{.Name}}Set {
 	return intersection
 }
 
-// Returns a new set with items in the current set but not in the other set
+// Difference returns a new set with items in the current set but not in the other set
 func (set {{.Name}}Set) Difference(other {{.Name}}Set) {{.Name}}Set {
 	differencedSet := New{{.Name}}Set()
 	for elem := range set {
@@ -112,19 +112,19 @@ func (set {{.Name}}Set) Difference(other {{.Name}}Set) {{.Name}}Set {
 	return differencedSet
 }
 
-// Returns a new set with items in the current set or the other set but not in both.
+// SymmetricDifference returns a new set with items in the current set or the other set but not in both.
 func (set {{.Name}}Set) SymmetricDifference(other {{.Name}}Set) {{.Name}}Set {
 	aDiff := set.Difference(other)
 	bDiff := other.Difference(set)
 	return aDiff.Union(bDiff)
 }
 
-// Clears the entire set to be the empty set.
+// Clear clears the entire set to be the empty set.
 func (set *{{.Name}}Set) Clear() {
 	*set = make({{.Name}}Set)
 }
 
-// Allows the removal of a single item in the set.
+// Remove allows the removal of a single item in the set.
 func (set {{.Name}}Set) Remove(i {{.Pointer}}{{.Name}}) {
 	delete(set, i)
 }
@@ -134,7 +134,7 @@ func (set {{.Name}}Set) Cardinality() int {
 	return len(set)
 }
 
-// Iter() returns a channel of type {{.Pointer}}{{.Name}} that you can range over.
+// Iter returns a channel of type {{.Pointer}}{{.Name}} that you can range over.
 func (set {{.Name}}Set) Iter() <-chan {{.Pointer}}{{.Name}} {
 	ch := make(chan {{.Pointer}}{{.Name}})
 	go func() {
@@ -162,7 +162,7 @@ func (set {{.Name}}Set) Equal(other {{.Name}}Set) bool {
 	return true
 }
 
-// Returns a clone of the set.
+// Clone returns a clone of the set.
 // Does NOT clone the underlying elements.
 func (set {{.Name}}Set) Clone() {{.Name}}Set {
 	clonedSet := New{{.Name}}Set()
