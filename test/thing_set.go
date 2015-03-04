@@ -8,10 +8,10 @@ package main
 // The MIT License (MIT)
 // Copyright (c) 2013 Ralph Caraveo (deckarep@gmail.com)
 
-// The primary type that represents a set
+// ThingSet is the primary type that represents a set
 type ThingSet map[Thing]struct{}
 
-// Creates and returns a reference to an empty set.
+// NewThingSet creates and returns a reference to an empty set.
 func NewThingSet(a ...Thing) ThingSet {
 	s := make(ThingSet)
 	for _, i := range a {
@@ -29,20 +29,20 @@ func (set ThingSet) ToSlice() []Thing {
 	return s
 }
 
-// Adds an item to the current set if it doesn't already exist in the set.
+// Add adds an item to the current set if it doesn't already exist in the set.
 func (set ThingSet) Add(i Thing) bool {
 	_, found := set[i]
 	set[i] = struct{}{}
 	return !found //False if it existed already
 }
 
-// Determines if a given item is already in the set.
+// Contains determines if a given item is already in the set.
 func (set ThingSet) Contains(i Thing) bool {
 	_, found := set[i]
 	return found
 }
 
-// Determines if the given items are all in the set
+// ContainsAll determines if the given items are all in the set
 func (set ThingSet) ContainsAll(i ...Thing) bool {
 	for _, v := range i {
 		if !set.Contains(v) {
@@ -52,7 +52,7 @@ func (set ThingSet) ContainsAll(i ...Thing) bool {
 	return true
 }
 
-// Determines if every item in the other set is in this set.
+// IsSubset determines if every item in the other set is in this set.
 func (set ThingSet) IsSubset(other ThingSet) bool {
 	for elem := range set {
 		if !other.Contains(elem) {
@@ -62,12 +62,12 @@ func (set ThingSet) IsSubset(other ThingSet) bool {
 	return true
 }
 
-// Determines if every item of this set is in the other set.
+// IsSuperset determines if every item of this set is in the other set.
 func (set ThingSet) IsSuperset(other ThingSet) bool {
 	return other.IsSubset(set)
 }
 
-// Returns a new set with all items in both sets.
+// Union returns a new set with all items in both sets.
 func (set ThingSet) Union(other ThingSet) ThingSet {
 	unionedSet := NewThingSet()
 
@@ -80,7 +80,7 @@ func (set ThingSet) Union(other ThingSet) ThingSet {
 	return unionedSet
 }
 
-// Returns a new set with items that exist only in both sets.
+// Intersect returns a new set with items that exist only in both sets.
 func (set ThingSet) Intersect(other ThingSet) ThingSet {
 	intersection := NewThingSet()
 	// loop over smaller set
@@ -100,7 +100,7 @@ func (set ThingSet) Intersect(other ThingSet) ThingSet {
 	return intersection
 }
 
-// Returns a new set with items in the current set but not in the other set
+// Difference returns a new set with items in the current set but not in the other set
 func (set ThingSet) Difference(other ThingSet) ThingSet {
 	differencedSet := NewThingSet()
 	for elem := range set {
@@ -111,19 +111,19 @@ func (set ThingSet) Difference(other ThingSet) ThingSet {
 	return differencedSet
 }
 
-// Returns a new set with items in the current set or the other set but not in both.
+// SymmetricDifference returns a new set with items in the current set or the other set but not in both.
 func (set ThingSet) SymmetricDifference(other ThingSet) ThingSet {
 	aDiff := set.Difference(other)
 	bDiff := other.Difference(set)
 	return aDiff.Union(bDiff)
 }
 
-// Clears the entire set to be the empty set.
+// Clear clears the entire set to be the empty set.
 func (set *ThingSet) Clear() {
 	*set = make(ThingSet)
 }
 
-// Allows the removal of a single item in the set.
+// Remove allows the removal of a single item in the set.
 func (set ThingSet) Remove(i Thing) {
 	delete(set, i)
 }
@@ -133,7 +133,7 @@ func (set ThingSet) Cardinality() int {
 	return len(set)
 }
 
-// Iter() returns a channel of type Thing that you can range over.
+// Iter returns a channel of type Thing that you can range over.
 func (set ThingSet) Iter() <-chan Thing {
 	ch := make(chan Thing)
 	go func() {
@@ -161,7 +161,7 @@ func (set ThingSet) Equal(other ThingSet) bool {
 	return true
 }
 
-// Returns a clone of the set.
+// Clone returns a clone of the set.
 // Does NOT clone the underlying elements.
 func (set ThingSet) Clone() ThingSet {
 	clonedSet := NewThingSet()
