@@ -1,4 +1,4 @@
-module github.com/clipperhouse/setwriter
+module github.com/clipperhouse/set
 
 go 1.13
 
