@@ -171,6 +171,22 @@ func (set {{.Name}}Set) Clone() {{.Name}}Set {
 	}
 	return clonedSet
 }
+
+// Partition this set in two sets according to a predicate.
+// the first $coll consists of all elements that  satisfy the predicate p
+// and the second set consists of all elements  that don't.
+// The relative order of the elements in the resulting sets is the same as in the original $coll.
+func (set {{.Name}}Set) Partition(p func({{.Name}})bool)({{.Name}}Set,{{.Name}}Set) {
+	l,r := New{{.Name}}Set(), New{{.Name}}Set()
+	for elem :=range set {
+		if p(elem) {
+			l.Add(elem)
+		}else{
+			r.Add(elem)
+		}
+	}
+	return l,r
+}
 `,
 	TypeConstraint: typewriter.Constraint{Comparable: true},
 }
