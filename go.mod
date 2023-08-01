@@ -1,4 +1,4 @@
-module github.com/clipperhouse/setwriter
+module mysetwriter
 
 go 1.13
 
